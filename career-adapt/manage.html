@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="big5" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase-messaging.js"></script>
+
+    <!-- math lib-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.js"></script>
+    <!-- charjs lib-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC7XhT0oJyXXE_meecc_Njaog22a1YarfI",
+            authDomain: "career-adapt-app.firebaseapp.com",
+            databaseURL: "https://career-adapt-app.firebaseio.com",
+            projectId: "career-adapt-app",
+            storageBucket: "",
+            messagingSenderId: "182711443971"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+
+    <style>
+
+        .table-condensed {
+            font-size: 8px;
+        }
+
+        
+        .achievements-wrapper {
+            height: 250px;
+            overflow: auto;
+        }
+        
+        /*
+        table {
+            border-collapse: collapse;
+            width: 300px;
+            overflow-x: scroll;
+            display: block;
+        }
+
+        thead {
+            background-color: #EFEFEF;
+        }
+
+        thead, tbody {
+            display: block;
+        }
+
+        tbody {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 140px;
+        }
+
+        td, th {
+            min-width: 100px;
+            height: 25px;
+            border: dashed 1px lightblue;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100px;
+        }*/
+
+        .pad {
+            padding: 20px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .small-font {
+            font-size: 15px;
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <center>
+        <h1>Summary of</h1>
+        <h1>Career Adapt-Abilities Scale</h1>
+        <h1>生涯調適量表統計資料</h1>
+    </center>
+
+    <br />
+    <br />
+
+    <div class="form-group pad">
+        <input id="txtEmail" type="email" class="form-control" placeholder="Email" />
+        <input id="txtPassword" type="password" class="form-control" placeholder="Password" />
+        <br />
+        <label id="errorLoginMessage" class="small-font" style="color:red;"></label>
+        <br />
+        <button id="btnLogin" onclick="pressLogin()" class="btn btn-action">Log In</button>
+        <button id="btnSignUp" onclick="pressSignUp()" class="btn btn-secondary">Sign Up</button>
+        <button id="btnLogout" onclick="pressLogout()" class="btn btn-action hide">Log Out</button>
+        <br />
+        <label id="loginMessage" class="small-font">You logged out!</label>
+    </div>
+
+    <br />
+    <br />
+
+    <div id="account-message" class="alert alert-warning pad hide">
+        您的帳號並沒有管理權限，如果這是個錯誤請聯繫 <strong><a href="mailto:chia.hp21@gmail.com">管理者</a></strong>
+    </div>
+
+    <div id="manage-content" class="pad hide">
+        <h4> 統計結果 Statistics</h4>
+        <div class="table table-condensed achievements-wrapper">
+            <table id="statistic-table" class="table"></table>
+        </div>
+        <h4>詳細結果 Detail Results</h4>
+        <div class="pad">
+            <button id="exportBtn" onclick="exportTableToCSV('career-adapt-summary')" type="button" class="btn btn-primary">Export to Excel</button>
+            <br />
+            <button id="selectAllBtn" onclick="selectAll()" type="button" class="btn btn-default">Select All Data</button>
+            <button id="deselectAllBtn" onclick="deselectAll()" type="button" class="btn btn-default">De-Select All Data</button>
+            <br />
+            <button id="clearAllBtn" onclick="clearAll()" type="button" class="btn btn-warning">Clear All Data</button>
+            <button id="clearSelectedBtn" onclick="clearSelected()" type="button" class="btn btn-warning">Clear Selected Data</button>
+        </div>
+        <br />
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            點選下列表格以展示圖表!!
+        </div>
+        <div id="save-image" class="container">
+            <div id="ind-txt" class="row small-font hide">
+                <div class="col-sm-6">
+                    <ul>
+                        <li id="lname"></li>
+                        <li id="lschool"></li>
+                        <li id="lmajor"></li>
+                        <li id="lschoolnumber"></li>
+                        <li id="lgender"></li>
+                        <li id="lage"></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <p>原始分數</p>
+                    <ul id="original-score-list"></ul>
+                </div>
+            </div>
+            <br />
+            <canvas id="graph"></canvas>
+        </div>
+        <div class="table table-condensed achievements-wrapper">
+            <table id="summary-table" class="table"></table>
+        </div>
+        
+
+
+    <script src="structure.js" charset="big5"></script>
+    <script src="manage.js" charset="big5"></script>
+    <script src="login.js"></script>
+
+</body>
+
+</html>

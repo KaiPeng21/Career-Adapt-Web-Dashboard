@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> Career Adapt-Abilities Scale</title>
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+
+    <style>
+        .tab{
+            display: inline-block;
+            margin-left: 40px;
+        }
+        .small-font{
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <center>
+            <h1> Career Adapt-Abilities Scale </h1>
+            <h1> 生涯調適量表 </h1>
+        </center>
+        <br />
+        <div class="container">
+            <form>
+                <div class="form-group">
+                    <label for="schoolName"> 學校 (School) </label>
+                    <input type="text" class="form-control" id="schoolName" />
+                </div>
+                <div class="form-group">
+                    <label for="major"> 科系 (Major) </label>
+                    <input type="text" class="form-control" id="major" />
+                </div>
+                <div class="form-group">
+                    <label for="name"> 姓名 (Name) </label>
+                    <input type="text" class="form-control" id="name" />
+                </div>
+                <div class="form-group">
+                    <label for="schoolNumber"> 學號 (School ID Number) </label>
+                    <input type="text" class="form-control" id="schoolNumber" />
+                </div>
+                <div class="form-group">
+                    <label for="gender"> 性別 (Gender) </label>
+                    <div class="radio">
+                        <label><input type="radio" name="genderradio" checked="checked" /> 男 (Male) </label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="genderradio" /> 女 (Female) </label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="genderradio" /> 我不想回答 (I prefer not to answer) </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age"> 年齡 (Age) </label>
+                    <input type="text" class="form-control" id="age" />
+                </div>
+            </form>
+        </div>
+        <br />
+        <div class="container">
+            <div id="surveyblock">
+                <label id="survey"></label>
+            </div>
+            <center>
+                <button id="submitBtn" onclick="submitClick()" type="button" class="btn btn-default">submit</button>
+            </center>
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC7XhT0oJyXXE_meecc_Njaog22a1YarfI",
+            authDomain: "career-adapt-app.firebaseapp.com",
+            databaseURL: "https://career-adapt-app.firebaseio.com",
+            projectId: "career-adapt-app",
+            storageBucket: "",
+            messagingSenderId: "182711443971"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script src="structure.js" charset="big5"></script>
+    <script src="data.js" charset="big5"></script>
+    <script src="index.js" charset="big5"></script>
+
+</body>
+</html>
